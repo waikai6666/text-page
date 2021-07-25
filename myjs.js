@@ -64,7 +64,7 @@ function get_text(){
 	var val = $.cookie('text');
 	// [todo]:
 	// 实现cookie读存
-	// alert(val);
+	alert(val);
 	
 	// var text=$("#note_text").val("123456");
 	// var file_temp="./input.txt";
