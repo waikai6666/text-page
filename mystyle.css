@@ -1,0 +1,92 @@
+html {
+	background-color: burlywood;
+	font-family: "楷体";
+}
+#box{
+	height: 530px;
+	width: auto;
+}
+#标题{
+	text-align: center;
+	background-color: bisque;
+	margin: 0,0;
+	padding: 0,0;
+	height: 100px;
+	line-height: 100px;
+	font-size: 25px;
+}
+#菜单{
+	text-align: center;
+	background-color: blanchedalmond;
+	height: 80%;
+	width: 10%;
+	float: left;
+}
+#菜单-学习资源 div,#菜单-我的练习 div,#菜单-我的笔记 div{
+	display: none;
+}
+h2:hover{
+	background-color: chocolate;
+	color: #F5F5DC;
+}
+h3:hover{
+	background-color: chocolate;
+	color: #F5F5DC;
+}
+h4:hover{
+	background-color: #DEB887;
+	color: #F5F5DC;
+}
+#内容{
+	height: 80%;
+	width: 90%;
+	float: left;
+	background-color: #F5F5DC;
+	/* overflow: auto; */
+}
+iframe{
+	font-size: 70%;
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	overflow: auto;
+}
+#notes{
+	height: 120px;
+	width: 250px;
+	text-align: unset;
+	display: none;
+}
+#note1{
+	position: fixed;
+	top: 200px;
+	right: 50px;
+	height: 120px;
+	width: 200px;
+	background-color: beige;
+	border: 0px;
+	opacity: 0.7;
+	/* border-radius: 10px; */
+}
+#note1 textarea{
+	width: 100%;
+	height: 100%;
+	/* opacity: 0; */
+}
+#line1{
+	position: fixed;
+	top: 240px;
+	right: 0px;
+	width: 50px;
+}
+#note12{
+	height: 120px;
+	width: 200px;
+	background-color: beige;
+	border: 0px;
+	/* border-radius: 10px; */
+}
+#尾部{
+	background-color: bisque;
+	text-align: center;
+}
