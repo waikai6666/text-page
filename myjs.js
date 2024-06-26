@@ -40,7 +40,7 @@ function note_1(){
 	$("#notes").toggle();
 }
 function win0(){
-	$("#content").attr("src","https://cn.bing.com/?FORM=Z9FD1");
+	$("#content").attr("src","https://www.bing.com/?mkt=zh-CN");
 }
 function learn_html(){
 	$("#content").attr("src","https://how2j.cn/k/html/html-tutorial/175.html");
