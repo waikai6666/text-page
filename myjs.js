@@ -7,12 +7,17 @@ $(document).ready(function(){
 	$("#message1").html("");
 });
 $(function(){
-	$("#菜单-学习资源").mouseenter(menue1);	/// 鼠标进入
-	$("#菜单-学习资源").mouseleave(menue1);	/// 鼠标离开
-	$("#菜单-我的练习").mouseenter(menue2);	/// 鼠标进入
-	$("#菜单-我的练习").mouseleave(menue2);	/// 鼠标离开
-	$("#菜单-我的笔记").mouseenter(menue3);	/// 鼠标进入
-	$("#菜单-我的笔记").mouseleave(menue3);	/// 鼠标离开
+	//$("#菜单-学习资源").mouseenter(menue1);	/// 鼠标进入
+	//$("#菜单-学习资源").mouseleave(menue1);	/// 鼠标离开
+	//$("#菜单-我的练习").mouseenter(menue2);	/// 鼠标进入
+	//$("#菜单-我的练习").mouseleave(menue2);	/// 鼠标离开
+	//$("#菜单-我的笔记").mouseenter(menue3);	/// 鼠标进入
+	//$("#菜单-我的笔记").mouseleave(menue3);	/// 鼠标离开
+	
+	$("#菜单-学习资源").click(menue1);	/// 鼠标进入
+	$("#菜单-我的练习").click(menue2);	/// 鼠标进入
+	$("#菜单-我的笔记").click(menue3);	/// 鼠标进入
+	
 	$("#菜单-首页").click(win0);
 	$("#菜单-学习资源 #html").click(learn_html);
 	$("#菜单-学习资源 #css").click(learn_css);
