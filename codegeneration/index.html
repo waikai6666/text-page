@@ -3,74 +3,82 @@
 	<body>
 		<div style="display: flex;flex-direction: row;width: 1880px;flex-wrap: wrap;">
 			<div name="inputBoxDiv">
-				<textarea name="inputBox" style="width: 954px; height: 326px;">/****** GIT仓库： ZOS.Code    ******/
-					/****** 分支：release-3.9    ******/
-					/****** 修改人：王楷   ******/
-					/****** 修改时间：2021-11-18 ******/
-					/****** 修改说明：添加表SS_ProductInFile：用于存放生产入库中提交的附件信息；添加“附件上传”功能权限；添加“附件下载”功能权限 ******/
-					
-					/* 添加表SS_ProductInFile：用于存放生产入库中提交的附件信息 */
-					SET ANSI_NULLS ON
-					GO
-					SET QUOTED_IDENTIFIER ON
-					GO
-					CREATE TABLE [dbo].[SS_ProductInFile](
-						[Id] [int] IDENTITY(1,1) NOT NULL,
-						[HzProductionWarehousingId] [int] NOT NULL,
-						[FileId] [uniqueidentifier] NOT NULL,
-						[FileName] [nvarchar](200) NOT NULL,
-						[CreatedUserId] [int] NOT NULL,
-						[CreatedTime] [datetime] NOT NULL,
-						[Status] [int] NOT NULL,
-					 CONSTRAINT [PK_SS_ProductInFile] PRIMARY KEY CLUSTERED 
-					(
-						[Id] ASC
-					)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-					) ON [PRIMARY]
-					GO
-					/* 添加PM_HzProductionWarehousing表的Id为SS_ProductInFile表的外键 */
-					ALTER TABLE [dbo].[SS_ProductInFile]  WITH CHECK ADD  CONSTRAINT [FK_SS_ProductInFile_PM_HzProductionWarehousing] FOREIGN KEY([HzProductionWarehousingId])
-					REFERENCES [dbo].[PM_HzProductionWarehousing] ([Id])
-					GO
-					/* 添加字段说明 */
-					EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件唯一标识' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SS_ProductInFile', @level2type=N'COLUMN',@level2name=N'FileId'
-					GO
-					EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件名' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SS_ProductInFile', @level2type=N'COLUMN',@level2name=N'FileName'
-					GO
-					EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'状态：0代表已删除；1代表正常存在' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SS_ProductInFile', @level2type=N'COLUMN',@level2name=N'Status'
-					GO
-					EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'生产入库申请表Id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SS_ProductInFile', @level2type=N'COLUMN',@level2name=N'HzProductionWarehousingId'
-					GO
-					/****** 给生产入库页面增加“附件上传”功能权限 ******/
-					SET IDENTITY_INSERT [dbo].[SM_SystemFunction] ON 
-					INSERT INTO [dbo].[SM_SystemFunction] ([Id], [FunctionName], [FunctionURL], [FunctionType], [ParentFunctionId], [FunctionStatus], [CreateUser], [CreateDate], [EditUser], [EditDate], [ControllerName], [ActionName], [SystemName], [Icon], [Route], [ElementName], [Order],[EnterpriseId],[IsPermissionPage],[AggregateRootId]) 
-					VALUES (8084, N'附件上传', N'C0303012703', 3, 2484, 1, N'Z0681', CAST(N'2021-12-22 15:42:28.860' AS DateTime), NULL, NULL, NULL, NULL, N'storagesandsupplies', NULL, NULL, NULL, 3, 1, 1, '6b2a8d0d-8376-4064-a436-604f78d7cc30' )
-					SET IDENTITY_INSERT [dbo].[SM_SystemFunction] OFF
-					
-					INSERT INTO [dbo].[SM_SystemFunctionPermission] ([SecurityOperationType],[SystemFunctionId]) VALUES(3,8084)
-					GO
-					INSERT INTO SM_SystemUserRoleAndFunctionMap(SystemUserRoleId,SystemFunctionId) VALUES (1,8084)
-					GO
-					/****** 给合同出库页面增加“附件下载”功能权限 ******/
-					SET IDENTITY_INSERT [dbo].[SM_SystemFunction] ON 
-					INSERT INTO [dbo].[SM_SystemFunction] ([Id], [FunctionName], [FunctionURL], [FunctionType], [ParentFunctionId], [FunctionStatus], [CreateUser], [CreateDate], [EditUser], [EditDate], [ControllerName], [ActionName], [SystemName], [Icon], [Route], [ElementName], [Order],[EnterpriseId],[IsPermissionPage],[AggregateRootId]) 
-					VALUES (8085, N'附件下载', N'C0303010501', 3, 927, 1, N'Z0681', CAST(N'2021-12-22 15:51:12.707' AS DateTime), NULL, NULL, NULL, NULL, N'storagesandsupplies', NULL, NULL, NULL, 1, 1, 1, '7bf022fc-0080-4f79-b631-55d0a9e004d9' )
-					SET IDENTITY_INSERT [dbo].[SM_SystemFunction] OFF
-					
-					INSERT INTO [dbo].[SM_SystemFunctionPermission] ([SecurityOperationType],[SystemFunctionId]) VALUES(3,8085)
-					GO
-					INSERT INTO SM_SystemUserRoleAndFunctionMap(SystemUserRoleId,SystemFunctionId) VALUES (1,8085)
-					GO
-					</textarea>
+				<textarea name="inputBox" style="width: 954px; height: 326px;">
+					/****** GIT仓库： ZOS.Code    ******/
+/****** 分支：release-3.17    ******/
+/****** 修改人：王楷   ******/
+/****** 修改时间：2022-03-18 ******/
+/****** 修改说明：添加表[QI_MilitaryProductFeedbackDealWithProcess]：用于存放军品反馈过程处理的数据 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[QI_MilitaryProductFeedbackDealWithProcess](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[MilitaryProductFeedbackId] [int] NOT NULL,
+	[MilitaryProductFeedbackOperateRecordId] [int] NOT NULL,
+	[Status] [int] NOT NULL,
+	[DealWithProcessLog] [nvarchar](max) NULL,
+	[FileName] [nvarchar](200) NULL,
+	[Guid] [uniqueidentifier] NULL,
+	[CreatorId] [int] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[EditOperatorId] [int] NULL,
+	[EditDate] [datetime] NULL,
+ CONSTRAINT [PK_QI_MilitaryProductFeedbackDealWithProcess] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'主键id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'Id'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'军品质量反馈id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'MilitaryProductFeedbackId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'军品质量反馈操作记录id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'MilitaryProductFeedbackOperateRecordId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'数据状态：1:正常；-1:已逻辑删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'Status'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'过程处理日志' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'DealWithProcessLog'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件名' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'FileName'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'guid' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'Guid'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建人id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'CreatorId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'CreateDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'编辑人id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'EditOperatorId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'编辑时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess', @level2type=N'COLUMN',@level2name=N'EditDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'军品质量反馈问题过程处理' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'QI_MilitaryProductFeedbackDealWithProcess'
+GO
+
+DROP TABLE [QI_MilitaryProductFeedbackDealWithProcess]
+				</textarea>
 			</div>
 			<div name="analyseResultBoxDiv">
 				<textarea name="analyseResultBox" style="width: 908px; height: 325px;"></textarea>
 			</div>
-			<div name="entityResultBox">
-				<textarea style="width: 956px; height: 485px;"></textarea>
+			<div name="entityResultBoxDiv">
+				<textarea name="entityResultBox" style="width: 956px; height: 485px;"></textarea>
 			</div>
-			<div name="repositoryResultBox">
-				<textarea style="width: 910px; height: 484px;"></textarea>
+			<div name="repositoryResultBoxDiv">
+				<textarea name="repositoryResultBox" style="width: 910px; height: 484px;"></textarea>
 			</div>
 		</div>
 	</body>
