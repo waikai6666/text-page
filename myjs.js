@@ -17,12 +17,16 @@ $(function(){
 	$("#菜单-学习资源 #html").click(learn_html);
 	$("#菜单-学习资源 #css").click(learn_css);
 	$("#菜单-学习资源 #JavaScript").click(learn_js);
+	$("#菜单-学习资源 #codeGeneration").click(tansferCodeGenerationPage);
 	$("#菜单-我的练习 #html").click(mytry_html);
 	$("#菜单-我的练习 #css").click(mytry_css);
 	$("#菜单-我的练习 #JavaScript").click(mytry_js);
 	$("#菜单-我的笔记 #note-1").click(note_1);
 	$("#notes").mouseleave(get_text);
 });
+function tansferCodeGenerationPage(){
+	$("#content").attr("src","https://waikai6666.github.io/text-page/codegeneration/index.html");
+}
 function menue1(){
 	$("#菜单-学习资源 div").toggle();
 }
