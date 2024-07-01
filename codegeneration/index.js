@@ -118,10 +118,16 @@ function inputFunction(){
 
 	// 输入参数
 	var param = {
-		EntityNamespace:$("input[name='EntityNamespace']").val(),
-		RepositoryNamespace:$("input[name='RepositoryNamespace']").val()
+		EntityNamespace:$("input[name='EntityNamespace']").val().trim(),
+		RepositoryNamespace:$("input[name='RepositoryNamespace']").val().trim()
 	};
 
+	if(param.EntityNamespace === ""){
+		param.EntityNamespace = "[TODO:its your namespace!]";
+	}
+	if(param.RepositoryNamespace === ""){
+		param.RepositoryNamespace = "[TODO:its your namespace!]";
+	}
 	// 输出显示内容
 	var fieldRegenerationInfo = "";
 	var repositoryCode = "";
