@@ -69,7 +69,13 @@
 	<body>
 		<div style="width: 100%; height: 271px;">
 			<div name="inputBoxDiv" style="width: 688px; height: 100%; float: left;">
+<<<<<<< HEAD
 				<textarea name="inputBox" style="width: 688px; height: 271px;"></textarea>
+=======
+				<textarea name="inputBox" style="width: 688px; height: 271px;">
+					
+				</textarea>
+>>>>>>> 24b16d8a857195a78a9c80e56f969cc61db4b725
 			</div>
 			<div style="width:calc(100% - 688px); height: 100%; float: left;">
 				<form id="param">
