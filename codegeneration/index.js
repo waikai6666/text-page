@@ -110,10 +110,10 @@ function inputFunction(){
 		}
 	}
 	analyseObject.value=output;
-	var fileName = result.tableName;
+	var tableNameWithoutFrontWord = result.tableName;
 	var fileNameIndex = result.tableName.indexOf(keyWords[15]);
 	if(fileNameIndex>-1){
-		fileName = result.tableName.substring(fileNameIndex+keyWords[15].length);
+		tableNameWithoutFrontWord = result.tableName.substring(fileNameIndex+keyWords[15].length);
 	}
 
 	// 输入参数
@@ -122,24 +122,33 @@ function inputFunction(){
 		RepositoryNamespace:$("input[name='RepositoryNamespace']").val()
 	};
 
-	// 生成实体类
-	var fieldRegenerationInfo = getEntityCode(fileName,result.tableName, fieldInfo,fieldDescription, param.EntityNamespace);
-	entityObject.value=fieldRegenerationInfo.entityCode;
-	// 生成repository
-	var repositoryCode = getRepositoryCode(fileName, result.tableName, fieldRegenerationInfo, param.RepositoryNamespace);
+	// 输出显示内容
+	var fieldRegenerationInfo = "";
+	var repositoryCode = "";
+	if(fieldInfo != undefined && fieldInfo.length > 0){
+		// 生成实体类
+		fieldRegenerationInfo = getEntityCode(tableNameWithoutFrontWord,result.tableName, fieldInfo, fieldDescription, param.EntityNamespace);
+		// 生成repository
+		repositoryCode = getRepositoryCode(tableNameWithoutFrontWord, result.tableName, fieldRegenerationInfo, param.RepositoryNamespace);
+	}
+	if(fieldRegenerationInfo.entityCode==undefined){
+		entityObject.value="";
+	}else{
+		entityObject.value=fieldRegenerationInfo.entityCode;
+	}
 	repositoryObject.value=repositoryCode;
 }
 
 function getEntityCode(tableNameWithoutFrontWord,tableName, fieldInfo,fieldDescription,namespace="ZOS.Common.Entities"){
 	var maxRowLength=120;
-	var getNettRowStart = "\n\t\t\t\t";
-	var addFieldSql=`${getNettRowStart}INSERT INTO ${tableName} (`;
-	var addValueSql=`VALUES (`;
-	var updateSql=`${getNettRowStart}UPDATE ${tableName} SET `;
-	var querySql=`${getNettRowStart}SELECT `;
+	var getNextRowStart = "\n\t\t\t\t";
+	var addFieldSql=`${getNextRowStart}INSERT INTO [${tableName}] (${getNextRowStart}`;
+	var addValueSql=`VALUES (${getNextRowStart}`;
+	var updateSql=`${getNextRowStart}UPDATE [${tableName}] SET `;
+	var querySql=`${getNextRowStart}SELECT `;
 	var sqlCurrentRowLength ={
-		addField:addFieldSql.length,
-		addValue:addValueSql.length,
+		addField:0,
+		addValue:0,
 		update:updateSql.length,
 		query: querySql.length
 	} 
@@ -161,54 +170,61 @@ namespace ${namespace}
 			var fieldName = element.fieldName;
 			var fieldType = element.fieldType;
 			var fieldIsNullAble = element.fieldIsNullAble;
+			var withoutSignField = `[${fieldName}]${commaSign}`;
 
-			// 实体类字段
-			if(fieldName !== keyWords[16]){
-				entityCode=entityCode +`
-			
+			if(fieldName === keyWords[16]){
+				// 如果字段为 Id 字段，则只有查询的sql中需要添加该字段
+				sqlCurrentRowLength.query += withoutSignField.length;
+				querySql=querySql+`${withoutSignField}`;
+				continue;
+			}
+			// 实体类字段 entityCode 
+			entityCode=entityCode +`
+	
 		/// <summary>
 		/// ${fieldDescription[fieldName] == undefined?"":fieldDescription[fieldName]}
 		/// </summary>
 		public ${type[fieldType+fieldIsNullAble] == undefined ? fieldType : type[fieldType+fieldIsNullAble]} ${fieldName} { get; set; }`;
-			}
 
-			// repository 内容
+			// repository 内容  addFieldSql  addValueSql 
 			var withSignField = `@${fieldName}${commaSign}`;
-			var withoutSignField = `[${fieldName}]${commaSign}`;
+
+			// 插入语句
 			if(sqlCurrentRowLength.addField+withoutSignField.length>maxRowLength){
 				sqlCurrentRowLength.addField = withoutSignField.length;
-				addFieldSql+=getNettRowStart;
-				addValueSql+=getNettRowStart;
+				addFieldSql+=getNextRowStart;
+				addValueSql+=getNextRowStart;
 			}else{
 				sqlCurrentRowLength.addField += withoutSignField.length;
 			}
 			addFieldSql=addFieldSql+`${withoutSignField}`;
 			addValueSql=addValueSql+`${withSignField}`;
 			
+			// 查询语句
 			if(sqlCurrentRowLength.query+withoutSignField.length>maxRowLength){
 				sqlCurrentRowLength.query = withoutSignField.length;
-				querySql+=getNettRowStart;
+				querySql+=getNextRowStart;
 			}else{
 				sqlCurrentRowLength.query += withoutSignField.length;
 			}
 			querySql=querySql+`${withoutSignField}`;
 			
+			// 更新语句 
 			var updateField = `[${fieldName}] = @${fieldName}${commaSign}`;
 			if(sqlCurrentRowLength.update+updateField.length>maxRowLength){
 				sqlCurrentRowLength.update = updateField.length;
-				updateSql+=getNettRowStart;
+				updateSql+=getNextRowStart;
 			}else{
 				sqlCurrentRowLength.update += updateField.length;
 			}
 			updateSql=updateSql+`${updateField}`;
 			
-			
 		}
 	}
-	addFieldSql+=`)${getNettRowStart}`;
+	addFieldSql+=`)${getNextRowStart}`;
 	addValueSql+=`) `;
-	updateSql+=`${getNettRowStart}WHERE [Id] = @Id `;
-	querySql += `${getNettRowStart}FROM ${tableName} `
+	updateSql+=`${getNextRowStart}WHERE [Id] = @Id `;
+	querySql += `${getNextRowStart}FROM [${tableName}] `
 	entityCode=entityCode+`
 	}
 }`;
@@ -218,7 +234,7 @@ namespace ${namespace}
 		updateSql:updateSql,
 		deleteSql:` DELETE FROM [${tableName}] WHERE [Id] = @Id `,
 		queryAllSql:querySql,
-		queryOneSql:querySql+`${getNettRowStart}WHERE [Id] = @Id `
+		queryOneSql:querySql+`${getNextRowStart}WHERE [Id] = @Id `
 	};
 	return returnValue;
 }
@@ -303,6 +319,9 @@ function getFieldInfo(analyseMap){
 	var fieldInfo={
 		fieldName:"",
 		fieldType:""
+	}
+	if(content == ""){
+		return analyseMap;
 	}
 	if(content[0]==keyWords[3]){
 		var rightEndIndex = content.indexOf(keyWords[4]);
